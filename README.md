@@ -1,20 +1,20 @@
-# 2-IBM-PowerVS
-Aquí voy a crear la guía para el powervs con la VPN
-
-# IBM Power Virtual Servers ☁️ - Conexión VPN On-Premise 🗄️
+# IBM Power Virtual Servers Conexión VPN Gateway Appliance On-Premise 🗄️
 
 ## 📃 Introducción
-Power Systems Virtual Server ***PowerVS*** tiene servicio VPNaaS, pero existen algunas limitaciones, como se describe en la documentación ["Limitaciones VPNaaS de PowerVS"](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-VPN-connections). Es por lo que, en este artículo, vas a aprender a cómo acceder a PowerVS usando una VPN site-to-site que se puede usar en VPC, en lugar de la VPNaaS de PowerVS.
+Aunque las instancias individuales de Power Virtual Server pueden tener acceso a Internet, actualmente no existe ningún servicio VPN IPsec de sitio a sitio que conecte las subredes de Power Virtual Server con sus redes remotas.Hasta el momento conozco tres formas de conectar el Workspace de Power VS a on-prem:
+- VPNaaS de PowerVS
+- VPN site-to-site a través de VPC
+- VPN Gateway Appliance (Juniper o Virtual Router Appliance)
+En esta guía vamos a aprender la tercera forma ["IBM Blog"](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-network-architecture-diagrams#network-reference-architecture-privateipsec).
 
 ### Los puntos clave a tener en cuenta antes de empezar con la guía son:
 - PowerVS no conoce la información de enrutamiento al rango de direcciones IP de la infraestructura local, por lo que no es posible enviar paquetes desde PowerVS a la red local.
-- La clave de esta configuración es definir el rango de direcciones IP de la red local como el prefijo de la VPC. Esta definición permite que la información de enrutamiento para el rango de IP local se anuncie a PowerVS a través de conexiones en la nube (Direct Link 2.0) entre la VPC y PowerVS, lo que permite que PowerVS envíe paquetes para el rango de IP local a la VPC.
-- Defina una tabla de enrutamiento de entrada en la VPC para que los paquetes de PowerVS a la VPC (destinados a la IP local) se enruten a la puerta de enlace VPN.
-- La puerta de enlace VPN pasa los paquetes a las instalaciones a través del túnel VPN, lo que permite la comunicación de un extremo a otro.
+- La puerta de enlace VPN del Gateway Appliance pasa los paquetes a las instalaciones a través del túnel VPN, lo que permite la comunicación de un extremo a otro.
+- PONER MÁS PUNTOS CLAVE
 
-A conitnuación se muestra la arquitectura de esta conexión, en esta también se muestra las distintas subnets involucradas tanto del lado de IBM como on-premise:
+A conitnuación se muestra la arquitectura de esta conexión:
 <p align="center"><img width="800" src="https://github.com/samirsoft-ux/Playbook_Power/blob/main/Imagenes/IS-arqui-power.png"></p>
-
+PONER UNA EXPLICACIÓN DE QUÉ ES LO QUE SE ENTIENDE DE ESTA ARQUITECTURA
 <br />
 
 ## 📑 Índice  
@@ -32,8 +32,10 @@ A conitnuación se muestra la arquitectura de esta conexión, en esta también s
 
 ## :pencil: Pre-Requisitos 
 * Contar con una cuenta facturable en <a href="https://cloud.ibm.com/"> ***IBM Cloud®*** </a>.
-* Tener una VPC ya creada la cual no tenga un prefijo de dirección predeterminado ya que en el transcurso de esta guía se le va agregar de forma manual.
-* Tener un Workspace dentro del servicio de PowerVS con una instancia que solo tenga una subred privada.
+* Definir la región donde se va a desplegar la infraestructura.
+* Tener un Juniper Gateway Appliance ya creado.(El dispositivo de puerta de enlace de IBM Cloud le permite enrutar selectivamente el tráfico de red pública y privada a través de un firewall de nivel empresarial con todas las funciones que funciona con las características de software de VyOS, JunOS o cualquier otro sistema operativo (Bring Your Own Appliance) que usted elegir.)
+* (Al utilizar la interfaz de usuario, la CLI o la API de IBM Cloud, puede seleccionar sus VLAN y, por lo tanto, las subredes asociadas que desea asociar con su dispositivo de puerta de enlace. Asociar una VLAN con un dispositivo de puerta de enlace redirige (o troncaliza) esa VLAN y todas sus subredes a su dispositivo, lo que le brinda control sobre el filtrado, el reenvío y la protección.)(Un dispositivo de puerta de enlace está conectado a dos VLAN de tránsito no extraíbles, una para sus redes públicas y otra privada.)
+* Tener un Workspace dentro del servicio de PowerVS con una instancia que solo tenga una subred privada (SI SE QUISIERA CREAR CON UNA INTERFAZ PÚBLICA HAY UNOS PASOS EXTRAS A REALIZAR).
 <br />
 
 ## 1° Configuración de la VPN site-to-site
