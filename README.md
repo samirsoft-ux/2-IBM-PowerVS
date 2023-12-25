@@ -5,19 +5,23 @@ Aunque las instancias individuales de Power Virtual Server pueden tener acceso a
 - VPNaaS de PowerVS
 - VPN site-to-site a través de VPC
 - VPN Gateway Appliance (Juniper o Virtual Router Appliance)
-En esta guía vamos a aprender la tercera forma ["IBM Blog"](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-network-architecture-diagrams#network-reference-architecture-privateipsec).
+En esta guía vamos a aprender la tercera forma [(IBM Blog)](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-network-architecture-diagrams#network-reference-architecture-privateipsec).
+
+## Disclaimer
+- Los vendors, versiones, availability, entre otras variables que se puedan encontrar durante cualquier proceso de esta guía solo se aplican para los fines prácticos de esta guía. En caso sea necesario modificar estas variables según tus requerimientos.
 
 ### Los puntos clave a tener en cuenta antes de empezar con la guía son:
 - PowerVS no conoce la información de enrutamiento al rango de direcciones IP de la infraestructura local, por lo que no es posible enviar paquetes desde PowerVS a la red local.
 - La puerta de enlace VPN del Gateway Appliance pasa los paquetes a las instalaciones a través del túnel VPN, lo que permite la comunicación de un extremo a otro.
-- PONER MÁS PUNTOS CLAVE
+- ((PONER MÁS PUNTOS CLAVE))
 
 A conitnuación se muestra la arquitectura de esta conexión:
-<p align="center"><img width="800" src="https://github.com/samirsoft-ux/Playbook_Power/blob/main/Imagenes/IS-arqui-power.png"></p>
-PONER UNA EXPLICACIÓN DE QUÉ ES LO QUE SE ENTIENDE DE ESTA ARQUITECTURA
+<p align="center"><img width="800" src="https://github.com/samirsoft-ux/2-IBM-PowerVS/blob/main/Imagenes/IS-arqui-power.png"></p>
+((PONER UNA EXPLICACIÓN DE QUÉ ES LO QUE SE ENTIENDE DE ESTA ARQUITECTURA))
 <br />
 
 ## 📑 Índice  
+((MODIFICAR ESTO))
 1. [Pre-Requisitos](#pencil-Pre-Requisitos)
 2. [1° Configuración de la VPN site-to-site](#1-Configuración-de-la-VPN-site-to-site)
 3. [2° Configuración del Cloud Connection en PowerVS](#2-Configuración-del-Cloud-Connection-en-PowerVS)
@@ -33,20 +37,22 @@ PONER UNA EXPLICACIÓN DE QUÉ ES LO QUE SE ENTIENDE DE ESTA ARQUITECTURA
 ## :pencil: Pre-Requisitos 
 * Contar con una cuenta facturable en <a href="https://cloud.ibm.com/"> ***IBM Cloud®*** </a>.
 * Definir la región donde se va a desplegar la infraestructura.
-* Tener un Juniper Gateway Appliance ya creado.(El dispositivo de puerta de enlace de IBM Cloud le permite enrutar selectivamente el tráfico de red pública y privada a través de un firewall de nivel empresarial con todas las funciones que funciona con las características de software de VyOS, JunOS o cualquier otro sistema operativo (Bring Your Own Appliance) que usted elegir.)
-* (Al utilizar la interfaz de usuario, la CLI o la API de IBM Cloud, puede seleccionar sus VLAN y, por lo tanto, las subredes asociadas que desea asociar con su dispositivo de puerta de enlace. Asociar una VLAN con un dispositivo de puerta de enlace redirige (o troncaliza) esa VLAN y todas sus subredes a su dispositivo, lo que le brinda control sobre el filtrado, el reenvío y la protección.)(Un dispositivo de puerta de enlace está conectado a dos VLAN de tránsito no extraíbles, una para sus redes públicas y otra privada.)
-* Tener un Workspace dentro del servicio de PowerVS con una instancia que solo tenga una subred privada (SI SE QUISIERA CREAR CON UNA INTERFAZ PÚBLICA HAY UNOS PASOS EXTRAS A REALIZAR).
+* Tener un Juniper Gateway Appliance ya creado.((El dispositivo de puerta de enlace de IBM Cloud le permite enrutar selectivamente el tráfico de red pública y privada a través de un firewall de nivel empresarial con todas las funciones que funciona con las características de software de VyOS, JunOS o cualquier otro sistema operativo (Bring Your Own Appliance) que usted elegir.))
+* ((Al utilizar la interfaz de usuario, la CLI o la API de IBM Cloud, puede seleccionar sus VLAN y, por lo tanto, las subredes asociadas que desea asociar con su dispositivo de puerta de enlace. Asociar una VLAN con un dispositivo de puerta de enlace redirige (o troncaliza) esa VLAN y todas sus subredes a su dispositivo, lo que le brinda control sobre el filtrado, el reenvío y la protección.)(Un dispositivo de puerta de enlace está conectado a dos VLAN de tránsito no extraíbles, una para sus redes públicas y otra privada.))
+* Tener un Workspace dentro del servicio de PowerVS con una instancia que solo tenga una subred privada ((SI SE QUISIERA CREAR CON UNA INTERFAZ PÚBLICA HAY UNOS PASOS EXTRAS A REALIZAR.))
 <br />
 
-## 1° Configuración de la VPN site-to-site
-```Esta configuración permite la conexión entre la red local(on-premise) con la VPC.```
+## 1° Creación del Gateway Appliance
+```Durante este proceso vas a crear el dispositivo de puerta de enlace que va a permitir enrutar selectivamente el tráfico de red privada a través de un firewall de nivel empresarial JunOS.```
 
-1. Ingresar al ***Navigation Menu*** dentro dirigirse a la sección ***VPC Infraestructure*** y seleccionar el apartado ***VPNs***.
+1. Selecciona la ***Search Bar*** dentro escribe la palabra clave ***Gateway*** y seleccionar el servicio ***Gateway Appliance***.
    
-2. Dar click en el botón "Create +".
+2. Una vez cargue la nueva vista da click en el botón "Create" (En caso no aparezca habilitado este botón da click en cualquier de los recuadros de Juniper vSRX o Virtual Router Appliance):
 
    **Parámetros de creación**
-   * El tipo de VPN debe ser ***Site-to-site gateways***.
+   * El tipo de Vendor debe ser ***Juniper*** junto con la versión por defecto que aparece.
+   * La licencia debe ser ***Standard license***
+   * Se debe deshabilitar la opción de ***High availability** ya que para esta guía va a ser suficiente la opción ***Single appliance***.
    * La locación debe ser en ***Dallas*** ya que es donde menos latencia existe si se encuentra en Perú.
    * Escribir un nombre para el gateway que haga referencia al servicio y donde se encuentra.
    * Elegir el grupo de recursos de su preferencia.
