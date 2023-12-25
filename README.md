@@ -52,23 +52,17 @@ A conitnuación se muestra la arquitectura de esta conexión:
    **Parámetros de creación**
    * El tipo de Vendor debe ser ***Juniper*** junto con la versión por defecto que aparece.
    * La licencia debe ser ***Standard license***
-   * Se debe deshabilitar la opción de ***High availability** ya que para esta guía va a ser suficiente la opción ***Single appliance***.
-   * La locación debe ser en ***Dallas*** ya que es donde menos latencia existe si se encuentra en Perú.
-   * Escribir un nombre para el gateway que haga referencia al servicio y donde se encuentra.
-   * Elegir el grupo de recursos de su preferencia.
-   * Si desea ingrese una etiqueta esta te ayuda a identificar detalles del recurso.
-   * Si desea ingrese una etiquetaa de administración de acceso esta te ayuda a aplicar políticas de acceso flexibles en recursos específicos.
-   * Elige la VPC que ya está previamente creada.
-   * La sección ***Subnet*** debe de estar vacía.
-   * El modo debe ser ***Policy-based***.
-   * Escribir un nombre para la conexión que haga referencia de donde a donde se está realizando la conexión.
-   * Ingrese la ***Peer gateway address***, esta es la dirección IP pública del gateway de la red local.
-   * Ingrese un ***Preshared key***, este es la clave configurada en la Peer gateway.
-   * Los parámetros de la sección ***Dead peer detection*** dejarlos por defecto.
-   * Crear un IKE policy.
-   * Crear un IPsec policy.
+   * Se debe deshabilitar la opción de ***High availability*** ya que para esta guía va a ser suficiente la opción ***Single appliance***.
+   * La locación debe ser en ***Dallas*** (cualquiera de las opciones "DALxx") ya que es donde menos latencia existe si se va a utilizar el servicio desde Perú.
+   * El pod déjalo por defecto.
+   * Las capacidades de computo son las que aparecen por defecto.
+   * Agregar la clave SSH de la máquina que se va a conectar por SSH al Gateway Appliance.
+   * El perfil de storage son los que están por defecto.
+   * La Interfaz de Red debe ser pública y privada.
+   * La Redundancia de puertos debe ser ***automática***
+   * La Velocidad del Puerto y la Salida Pública deben ser por defecto junto con los distintos Add-ons que aparecen.
 
-3. Finalmente, luego de haber creado la conexión asegurarse que el estado de la VPN sea ***Activa***.
+3. Finalmente, luego de haber creado la conexión asegurarse que el estado del Gateway sea ***Activa***.
 
 <p align="center">
    <img src=https://github.com/samirsoft-ux/Playbook_Power/blob/main/GIFs/Part_1.gif>
