@@ -1,7 +1,7 @@
 # IBM Power Virtual Servers Conexión VPN Gateway Appliance On-Premise 🗄️
 
 ## 📃 Introducción
-Aunque las instancias individuales de Power Virtual Server pueden tener acceso a Internet, actualmente no existe ningún servicio VPN IPsec de sitio a sitio que conecte las subredes de Power Virtual Server con sus redes remotas.Hasta el momento conozco tres formas de conectar el Workspace de Power VS a on-prem:
+Aunque las instancias individuales de Power Virtual Server pueden tener acceso a Internet, actualmente no existe ningún servicio VPN IPsec de sitio a sitio que conecte las subredes de Power Virtual Server con redes remotas. Hasta el momento conozco tres formas de conectar el Workspace de Power VS a on-prem:
 - VPNaaS de PowerVS
 - VPN site-to-site a través de VPC
 - VPN Gateway Appliance (Juniper o Virtual Router Appliance)
@@ -13,7 +13,7 @@ En esta guía vamos a aprender la tercera forma [(IBM Blog)](https://cloud.ibm.c
 ### Los puntos clave a tener en cuenta antes de empezar con la guía son:
 - PowerVS no conoce la información de enrutamiento al rango de direcciones IP de la infraestructura local, por lo que no es posible enviar paquetes desde PowerVS a la red local.
 - La puerta de enlace VPN del Gateway Appliance pasa los paquetes a las instalaciones a través del túnel VPN, lo que permite la comunicación de un extremo a otro.
-- ((PONER MÁS PUNTOS CLAVE))
+- ((PONER MÁS PUNTOS CLAVE)) ((mejorar la traducción de Google))
 
 A conitnuación se muestra la arquitectura de esta conexión:
 <p align="center"><img width="800" src="https://github.com/samirsoft-ux/2-IBM-PowerVS/blob/main/Imagenes/IS-arqui-power.png"></p>
@@ -43,7 +43,7 @@ A conitnuación se muestra la arquitectura de esta conexión:
 <br />
 
 ## 1° Creación del Gateway Appliance
-```Durante este proceso vas a crear el dispositivo de puerta de enlace que va a permitir enrutar selectivamente el tráfico de red privada a través de un firewall de nivel empresarial JunOS.```
+```Durante este proceso vas a crear el dispositivo de puerta de enlace (Gateway) que va a permitir enrutar selectivamente el tráfico de red privada a través de un firewall de nivel empresarial JunOS.```
 
 1. Selecciona la ***Search Bar*** dentro escribe la palabra clave ***Gateway*** y seleccionar el servicio ***Gateway Appliance***.
    
@@ -65,7 +65,7 @@ A conitnuación se muestra la arquitectura de esta conexión:
 3. Finalmente, luego de haber creado la conexión asegurarse que el estado del Gateway sea ***Activa***.
 
 <p align="center">
-   <img src=https://github.com/samirsoft-ux/Playbook_Power/blob/main/GIFs/Part_1.gif>
+   <img src=https://github.com/samirsoft-ux/2-IBM-PowerVS/blob/main/GIFs/Part_1.gif>
 </p>
 
    **Notas**
